@@ -91,7 +91,7 @@ class StandardToJapaneseConverter:
 
 
 # Function interface for easier use
-def convert_to_japanese(
+def to_japanese(
     date_string: str,
     output_style: str = "standard",
     use_full_width: bool = True,

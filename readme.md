@@ -1,6 +1,6 @@
 # Japanese Date Converter
 
-A comprehensive Python library for converting dates between Japanese and standard formats.
+A simple tool to convert japanese-Standard-Japanese dates.
 
 ## Features
 
@@ -42,58 +42,58 @@ print(convert_date("2023-06", japanese_style="period"))    # 令和５年６月�
 ### Converting Japanese Dates to Standard Formats
 
 ```python
-from japanese_date_converter import convert_to_standard
+from japanese_date_converter import to_standard
 
 # Basic conversion to ISO 8601
-iso_date = convert_to_standard("令和5年12月15日")
+iso_date = to_standard("令和5年12月15日")
 print(iso_date)  # 2023-12-15T00:00:00.000Z
 
 # Get a datetime object
 from datetime import datetime
-dt = convert_to_standard("令和6年3月1日", output_format="datetime")
+dt = to_standard("令和6年3月1日", output_format="datetime")
 print(dt)  # 2024-03-01 00:00:00+00:00
 print(dt.year, dt.month, dt.day)  # 2024 3 1
 
 # Custom output format
-formatted = convert_to_standard("令和5年12月分", output_format="%Y/%m/%d")
+formatted = to_standard("令和5年12月分", output_format="%Y/%m/%d")
 print(formatted)  # 2023/12/01
 
 # Without timezone information
-local_date = convert_to_standard("平成30年1月1日", 
+local_date = to_standard("平成30年1月1日", 
                                 output_format="%Y-%m-%d", 
                                 timezone_aware=False)
 print(local_date)  # 2018-01-01
 
 # Custom value on error
-result = convert_to_standard("invalid text", default_on_error="INVALID DATE")
+result = to_standard("invalid text", default_on_error="INVALID DATE")
 print(result)  # INVALID DATE
 ```
 
 ### Converting Standard Dates to Japanese Format
 
 ```python
-from japanese_date_converter import convert_to_japanese
+from japanese_date_converter import to_japanese
 
 # Basic conversion
-jp_date = convert_to_japanese("2023-12-15")
+jp_date = to_japanese("2023-12-15")
 print(jp_date)  # 令和５年１２月１５日
 
 # Different styles
-standard = convert_to_japanese("2023-06-15", output_style="standard")
+standard = to_japanese("2023-06-15", output_style="standard")
 print(standard)  # 令和５年６月１５日
 
-formal = convert_to_japanese("2023-06-15", output_style="formal")
+formal = to_japanese("2023-06-15", output_style="formal")
 print(formal)    # 令和５年６月日付
 
-period = convert_to_japanese("2023-06-15", output_style="period")
+period = to_japanese("2023-06-15", output_style="period")
 print(period)    # 令和５年６月分
 
 # Using half-width digits
-half_width = convert_to_japanese("2023-06-15", use_full_width=False)
+half_width = to_japanese("2023-06-15", use_full_width=False)
 print(half_width)  # 令和5年6月15日
 
 # Without day
-no_day = convert_to_japanese("2023-06-15", include_day=False)
+no_day = to_japanese("2023-06-15", include_day=False)
 print(no_day)    # 令和５年６月
 ```
 

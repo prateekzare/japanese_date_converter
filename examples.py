@@ -3,7 +3,7 @@ Examples for using the Japanese Date Converter.
 """
 
 from .main import convert_date
-from .converters import convert_to_standard, convert_to_japanese
+from .converters import to_standard, to_japanese
 
 
 def run_examples():
@@ -22,14 +22,14 @@ def run_examples():
     
     print("\n1. Converting Japanese dates to ISO format:")
     for date in japanese_dates:
-        result = convert_to_standard(date)
+        result = to_standard(date)
         print(f"  {date} → {result}")
     
     print("\n2. Converting Japanese dates to custom formats:")
     date = "令和5年12月15日"
     formats = ["%Y-%m-%d", "%B %d, %Y", "%Y年%m月%d日", "%d/%m/%Y"]
     for fmt in formats:
-        result = convert_to_standard(date, output_format=fmt)
+        result = to_standard(date, output_format=fmt)
         print(f"  Format {fmt}: {result}")
     
     # Example standard dates
@@ -43,14 +43,14 @@ def run_examples():
     
     print("\n3. Converting standard dates to Japanese format:")
     for date in standard_dates:
-        result = convert_to_japanese(date)
+        result = to_japanese(date)
         print(f"  {date} → {result}")
     
     print("\n4. Converting with different Japanese styles:")
     date = "2023-06-15"
     styles = ["standard", "formal", "period"]
     for style in styles:
-        result = convert_to_japanese(date, output_style=style)
+        result = to_japanese(date, output_style=style)
         print(f"  Style '{style}': {result}")
     
     print("\n5. Using the main convert_date function with auto-detection:")

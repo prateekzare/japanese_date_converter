@@ -5,7 +5,7 @@ Main entry point for Japanese Date Converter.
 from typing import Union, Any
 from datetime import datetime
 
-from .converters import convert_to_standard, convert_to_japanese
+from .converters import to_standard, to_japanese
 
 
 def convert_date(

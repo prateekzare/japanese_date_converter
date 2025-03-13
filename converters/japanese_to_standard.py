@@ -168,7 +168,7 @@ class JapaneseToStandardConverter:
 
 
 # Function interface for easier use
-def convert_to_standard(
+def to_standard(
     date_string: str,
     output_format: str = "iso",
     default_on_error: Any = "",
