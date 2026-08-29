@@ -93,7 +93,9 @@ The 平成 transition worked differently — Emperor Akihito acceded the day *af
 
 ### Western
 
-ISO 8601 (`2023-12-15`, with or without a time part), `2023/12/15`, `20231215`, `December 15, 2023`, `15 Dec 2023`, `2023年12月15日`, `12/15/2023`, two-digit years, and `date` / `datetime` objects.
+ISO 8601 (`2023-12-15`, with or without a time part), `2023/12/15`, `20231215`, `December 15, 2023`, `15 Dec 2023`, `2023年12月15日`, `12/15/2023`, `2023-06` and `June 2023` (year-month, resolves to the 1st), bare `2023`, two-digit years, and `date` / `datetime` objects.
+
+Both `to_standard` and `to_japanese` accept `date` and `datetime` objects as well as strings. Passing an already-standard string to `to_standard` re-emits it in the requested format rather than failing for having no era.
 
 ## Output styles
 
@@ -244,18 +246,42 @@ pip install --no-cache-dir --force-reinstall .
 python -c "import japanese_date_converter as j; print(j.__version__, j.to_japanese('2019-05-01', use_full_width=False))"
 ```
 
-## Changes in 2.0
+## Upgrading from 1.x
+
+**2.0 is a drop-in replacement.** `to_standard`, `to_japanese`, `convert_date`, both
+converter classes and the whole exception hierarchy keep their 1.x names, positional
+argument order and default values. Every new argument is keyword-with-default. Failures
+still return `default_on_error` unless you opt into `strict=True`.
+
+`tests/test_v1_compatibility.py` pins every example from the 1.x README so this cannot
+regress.
+
+### Two documented outputs deliberately changed
+
+| Call | 1.x printed | 2.0 prints | Why |
+|------|-------------|-----------|-----|
+| `to_japanese("2023-06-15", output_style="formal")` | `令和５年６月日付` | `令和５年６月１５日付` | 1.x dropped the day, producing a 年月日付 string with no 日 value. Use `include_day=False` if you want the day gone. |
+| `to_standard("令和07年01月23日")` | *README said* `2023-01-23` | `2025-01-23` | The README was wrong. 令和 began in 2019, so 令和7年 is 2025; 2023 is 令和5年. 1.x returned 2025 here too. |
+
+### Things the 1.x README documented but 1.x did not do
+
+- `convert_date("2023-06", japanese_style="period")` returned the error default, because
+  there was no year-month parsing pattern. It now returns `令和５年６月分`.
+- `from japanese_date_converter import convert_date` raised `ImportError` — `convert_date`
+  was never in `__all__`, despite being the first line of the Quick Start.
+- Calling `convert_date` at all raised `NameError`: it dispatched to
+  `convert_to_standard` / `convert_to_japanese`, neither of which existed.
+
+### What else is new
 
 - Eras are date ranges, not start years — fixes wrong results across all five transitions
-- `main.convert_date` no longer crashes (1.x called undefined `convert_to_standard` / `convert_to_japanese`)
-- `convert_date` is now exported from the package root, as the 1.x README claimed
-- `formal` style no longer drops the day (1.x produced `令和５年６月日付`)
 - 元年, kanji numerals, era ligatures, ID-card codes and romaji era names are all parsed
 - `strict=` raises instead of silently returning a default
-- Added `describe()`, `convert_many()`, `parse_western_date()`, `format_wareki()`, the era table API and the `jpdate` CLI
+- `describe()`, `convert_many()`, `parse_western_date()`, `format_wareki()`, the era table
+  API and the `jpdate` CLI
+- `get_era_from_year(year, month, day)` — the month and day are optional, but they are the
+  only way to be right across a transition
 - All arithmetic uses `datetime.date`, so no timezone can shift a date across an era boundary
-
-`to_standard`, `to_japanese`, `convert_date`, the converter classes and the exception hierarchy keep their 1.x signatures; every new argument is keyword-with-default.
 
 ## License
 

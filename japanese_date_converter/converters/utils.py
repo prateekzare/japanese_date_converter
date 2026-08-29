@@ -188,6 +188,10 @@ _PATTERNS = [
     # ISO 8601, with an optional time part that we deliberately discard
     ("iso", re.compile(
         r"^(\d{1,4})-(\d{1,2})-(\d{1,2})(?:[T ][\d:.]+(?:Z|[+-]\d{2}:?\d{2})?)?$")),
+    # 2023-06, 2023/06 -- a year and month with no day. Common when the value
+    # is a billing or reporting period rather than a specific day, which is
+    # exactly what the "period" (年月分) output style is for.
+    ("year_month", re.compile(r"^(\d{4})[-/.](\d{1,2})$")),
     # 2023年12月15日 -- a Gregorian year written with Japanese markers
     ("jp_marked", re.compile(r"^(\d{1,4})年\s*(?:(\d{1,2})月\s*(?:(\d{1,2})日?)?)?$")),
     # 2023/12/15, 2023.12.15
@@ -255,6 +259,10 @@ def parse_western_date(date_string: str, day_first: bool = False):
             if month is None:
                 continue
             day, year = int(groups[0]), int(groups[2])
+
+        elif name == "year_month":
+            year, month, day = int(groups[0]), int(groups[1]), 1
+            notes.append("No day was given, so the 1st of the month was assumed.")
 
         elif name == "month_year":
             month = MONTH_LOOKUP.get(groups[0].lower())

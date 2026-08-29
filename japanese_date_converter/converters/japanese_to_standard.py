@@ -66,7 +66,12 @@ class JapaneseToStandardConverter:
     _YMD_PACKED = re.compile(r"^(\d{2})(\d{2})(\d{2})$")
     _YEAR_ONLY = re.compile(r"^(\d{1,3})$")
 
-    _ISO = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{1,6}Z?$")
+    # An already-standard string: a bare ISO date, or one with a time part.
+    # These are passed through and re-emitted in the requested shape rather
+    # than rejected for having no era.
+    _ISO = re.compile(
+        r"^(\d{4})-(\d{2})-(\d{2})"
+        r"(?:[T ]\d{2}:\d{2}(?::\d{2})?(?:\.\d{1,6})?(?:Z|[+-]\d{2}:?\d{2})?)?$")
 
     # ---------------------------------------------------------------- parse
     def parse(self, date_string: str) -> ParsedJapaneseDate:
@@ -205,11 +210,21 @@ class JapaneseToStandardConverter:
             strict: raise instead of returning ``default_on_error``.
         """
         try:
-            if isinstance(date_string, str) and self._ISO.match(date_string.strip()):
-                # Already standard; re-emit it in the requested shape.
-                cleaned = date_string.strip().replace("Z", "+00:00")
-                stamp = datetime.fromisoformat(cleaned)
-                return self._format(stamp.date(), output_format, timezone_aware)
+            # date/datetime objects are already standard; just re-emit them in
+            # the requested shape, so to_standard mirrors to_japanese in what
+            # it will accept.
+            if isinstance(date_string, datetime):
+                return self._format(date_string.date(), output_format, timezone_aware)
+            if isinstance(date_string, date):
+                return self._format(date_string, output_format, timezone_aware)
+
+            if isinstance(date_string, str):
+                iso_match = self._ISO.match(date_string.strip())
+                if iso_match:
+                    year, month, day = (int(g) for g in iso_match.groups())
+                    validate_date_components(year, month, day)
+                    return self._format(date(year, month, day),
+                                        output_format, timezone_aware)
 
             parsed = self.parse(date_string)
             return self._format(parsed.date, output_format, timezone_aware)
