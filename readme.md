@@ -6,13 +6,13 @@ Convert between Japanese era dates (**wareki**, 和暦) and Gregorian dates (**s
 
 **<https://convertnow.tools/tools/date-time/japanese-date-converter-free/>**
 
-Free browser version of this package — same era table, same parser, runs entirely client-side. Useful for checking a single date, or for confirming what this library will return before you wire it in.
+Free browser version of this package, same era table, same parser, runs entirely client-side. Useful for checking a single date, or for confirming what this library will return before you wire it in.
 
 ---
 
 ## Why not just add 2018?
 
-Every wareki cheat sheet says to add 2018 to a 令和 year. That is right about 97% of the time and wrong exactly where it matters, because **Japanese eras do not change on 1 January** — they change on the day a reign changes.
+Every wareki cheat sheet says to add 2018 to a 令和 year. That is right about 97% of the time and wrong exactly where it matters, because **Japanese eras do not change on 1 January**, they change on the day a reign changes.
 
 ```python
 >>> from japanese_date_converter import to_japanese
@@ -51,11 +51,11 @@ to_japanese("2023-12-15", output_style="kanji")             # '令和五年十�
 ## Features
 
 - **Bidirectional**, with automatic direction detection
-- **Exact era boundaries** — all five modern eras stored as date ranges, not start years
+- **Exact era boundaries**, all five modern eras stored as date ranges, not start years
 - **元年 (gannen)** read and written for the first year of every era
 - **Every input shape** that appears in real documents: kanji, full-width, kanji numerals, ID-card codes, romaji, Unicode ligatures
 - **Seven output styles** including formal, billing-period and kanji-numeral forms
-- **Reported assumptions** — nothing is guessed silently
+- **Reported assumptions**, nothing is guessed silently
 - **Error messages that say what was wrong**, not just that something was
 - **A CLI** (`jpdate`) with CSV batch output
 - **No runtime dependencies**, Python 3.7+
@@ -68,11 +68,11 @@ to_japanese("2023-12-15", output_style="kanji")             # '令和五年十�
 | 大正 | Taishō | T | 1912-07-30 | 1926-12-25 |
 | 昭和 | Shōwa | S | 1926-12-25 | 1989-01-07 |
 | 平成 | Heisei | H | 1989-01-08 | 2019-04-30 |
-| 令和 | Reiwa | R | 2019-05-01 | — |
+| 令和 | Reiwa | R | 2019-05-01 |, |
 
 Two dates appear twice. 1912-07-30 is both 明治45年7月30日 and 大正元年7月30日; 1926-12-25 is both 大正15年12月25日 and 昭和元年12月25日. Both readings occur in genuine documents. Japanese government forms resolve the overlap in favour of the newer era, and so does this package.
 
-The 平成 transition worked differently — Emperor Akihito acceded the day *after* Emperor Shōwa's death, so 昭和64年1月7日 and 平成元年1月8日 are consecutive days sharing nothing.
+The 平成 transition worked differently, Emperor Akihito acceded the day *after* Emperor Shōwa's death, so 昭和64年1月7日 and 平成元年1月8日 are consecutive days sharing nothing.
 
 ## Supported input
 
@@ -121,7 +121,7 @@ to_standard("令和5年12月15日", output_format="datetime")    # datetime(2023
 to_standard("令和5年12月15日", timezone_aware=False)        # '2023-12-15T00:00:00.000'
 ```
 
-## `describe()` — every form at once
+## `describe()`, every form at once
 
 ```python
 >>> from japanese_date_converter import describe
@@ -137,7 +137,7 @@ to_standard("令和5年12月15日", timezone_aware=False)        # '2023-12-15T0
 
 Also returns `iso_timestamp`, `slashed`, `compact`, `us_long`, `eu_long`, `gregorian_ja`, `weekday_en`, `day_of_year`, `iso_week`, `era_en` and `era_span`.
 
-The 皇紀 (*kōki*) figure is the imperial year count from the legendary founding in 660 BC — which is why 2023 is 皇紀2683年, and why the Mitsubishi Zero, designed in 皇紀2600, was the "Type Zero".
+The 皇紀 (*kōki*) figure is the imperial year count from the legendary founding in 660 BC, which is why 2023 is 皇紀2683年, and why the Mitsubishi Zero, designed in 皇紀2600, was the "Type Zero".
 
 ## Assumptions are reported, never silent
 
@@ -157,7 +157,7 @@ The 皇紀 (*kōki*) figure is the imperial year count from the legendary foundi
   dates were lunisolar, so this mapping is approximate.']
 ```
 
-`昭和64年3月1日` never officially existed — 昭和64年 lasted seven days. Long-dated contracts and pre-printed forms carry extended era years anyway, so the date is converted **and** flagged, rather than refused.
+`昭和64年3月1日` never officially existed, 昭和64年 lasted seven days. Long-dated contracts and pre-printed forms carry extended era years anyway, so the date is converted **and** flagged, rather than refused.
 
 ## Errors
 
@@ -207,7 +207,7 @@ jpdate --today --all
 
 - **No pre-Meiji eras.** Edo-period eras changed for earthquakes, comets and auspicious omens as well as successions, and mapping them needs a lunisolar almanac rather than a formula. Gregorian output still works; era fields come back `None`.
 - **Dates before 1873-01-01 are approximate.** Japan ran on the lunisolar 天保暦 calendar until 明治5年12月3日 was redesignated 1873-01-01.
-- **No future eras.** If a sixth era is announced, this package returns 令和 for dates past that boundary until the era table is updated — a limitation shared by every wareki converter, spreadsheet formula and government system.
+- **No future eras.** If a sixth era is announced, this package returns 令和 for dates past that boundary until the era table is updated, a limitation shared by every wareki converter, spreadsheet formula and government system.
 
 ## Development
 
@@ -220,7 +220,7 @@ pytest
 
 ### Reinstalling into an existing venv
 
-A plain `pip install .` over an existing install is unreliable — pip serves a cached wheel when the version number has not changed, and editable installs leave a `.pth` or `__editable__` finder behind that keeps the old source tree importable. The scripts in `scripts/` handle both:
+A plain `pip install .` over an existing install is unreliable, pip serves a cached wheel when the version number has not changed, and editable installs leave a `.pth` or `__editable__` finder behind that keeps the old source tree importable. The scripts in `scripts/` handle both:
 
 ```powershell
 # Windows PowerShell
@@ -267,19 +267,19 @@ regress.
 
 - `convert_date("2023-06", japanese_style="period")` returned the error default, because
   there was no year-month parsing pattern. It now returns `令和５年６月分`.
-- `from japanese_date_converter import convert_date` raised `ImportError` — `convert_date`
+- `from japanese_date_converter import convert_date` raised `ImportError`, `convert_date`
   was never in `__all__`, despite being the first line of the Quick Start.
 - Calling `convert_date` at all raised `NameError`: it dispatched to
   `convert_to_standard` / `convert_to_japanese`, neither of which existed.
 
 ### What else is new
 
-- Eras are date ranges, not start years — fixes wrong results across all five transitions
+- Eras are date ranges, not start years, fixes wrong results across all five transitions
 - 元年, kanji numerals, era ligatures, ID-card codes and romaji era names are all parsed
 - `strict=` raises instead of silently returning a default
 - `describe()`, `convert_many()`, `parse_western_date()`, `format_wareki()`, the era table
   API and the `jpdate` CLI
-- `get_era_from_year(year, month, day)` — the month and day are optional, but they are the
+- `get_era_from_year(year, month, day)`, the month and day are optional, but they are the
   only way to be right across a transition
 - All arithmetic uses `datetime.date`, so no timezone can shift a date across an era boundary
 
@@ -289,4 +289,4 @@ MIT
 
 ## Contributing
 
-Pull requests welcome. New parsing cases are especially useful — if you have a date format from a real Japanese document that this fails on, please open an issue with the string.
+Pull requests welcome. New parsing cases are especially useful, if you have a date format from a real Japanese document that this fails on, please open an issue with the string.
