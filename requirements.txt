@@ -1,6 +1,8 @@
-# No external runtime dependencies required
+# Runtime: no external dependencies. That is deliberate -- a date library
+# would not know about era boundaries anyway, and this package is often
+# vendored into environments where adding dependencies is awkward.
 
-# Development dependencies
+# Development only:
 pytest>=7.0.0
 build>=0.8.0
 twine>=4.0.0

@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "japanese-date-converter"
+version = "2.0.0"
+description = "Convert between Japanese era dates (wareki) and Gregorian dates, with exact era boundaries."
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "MIT" }
+authors = [{ name = "Prateek Zare", email = "prateekzare@gmail.com" }]
+keywords = [
+    "japanese", "date", "converter", "era", "nengo", "wareki", "seireki",
+    "reiwa", "heisei", "showa", "taisho", "meiji", "calendar",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Natural Language :: Japanese",
+    "Natural Language :: English",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Utilities",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0", "build>=0.8.0", "twine>=4.0.0"]
+
+[project.urls]
+"Live Demo" = "https://convertnow.tools/tools/date-time/japanese-date-converter-free/"
+"Source Code" = "https://github.com/prateekzare/japanese_date_converter"
+"Bug Tracker" = "https://github.com/prateekzare/japanese_date_converter/issues"
+"Documentation" = "https://github.com/prateekzare/japanese_date_converter#readme"
+
+[project.scripts]
+jpdate = "japanese_date_converter.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["japanese_date_converter*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
